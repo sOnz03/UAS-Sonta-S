@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Struktur data untuk pesanan
+struct Order {
+    int order_id;
+    string pickup_location;
+    string destination;
+    string timestamp; // Format timestamp: "YYYY-MM-DD HH:MM:SS"
+};
+
+// Fungsi untuk menggabungkan dua bagian yang sudah terurut
+vector<Order> merge(const vector<Order>& left, const vector<Order>& right) {
+    vector<Order> sorted_list;
+    int i = 0, j = 0;
+
+    // Gabungkan dua bagian hingga satu bagian habis
+    while (i < left.size() && j < right.size()) {
+        if (left[i].timestamp <= right[j].timestamp) {
+            sorted_list.push_back(left[i]);
+            i++;
+        } else {
+            sorted_list.push_back(right[j]);
+            j++;
+        }
+    }
+
+    // Tambahkan sisa elemen jika ada
+    while (i < left.size()) {
+        sorted_list.push_back(left[i]);
+        i++;
+    }
+    while (j < right.size()) {
+        sorted_list.push_back(right[j]);
+        j++;
+    }
+
+    return sorted_list;
+}
+
+// Fungsi untuk melakukan merge sort
+vector<Order> mergeSort(const vector<Order>& data) {
+    if (data.size() <= 1) {
+        return data;  // Jika data hanya memiliki satu elemen, sudah terurut
+    }
+
+    // Pisahkan data menjadi dua bagian
+    int mid = data.size() / 2;
+    vector<Order> left(data.begin(), data.begin() + mid);
+    vector<Order> right(data.begin() + mid, data.end());
+
+    // Rekursif mengurutkan kedua bagian
+    left = mergeSort(left);
+    right = mergeSort(right);
+
+    // Gabungkan kedua bagian yang sudah terurut
+    return merge(left, right);
+}
+
+int main() {
+    cout<<"Nama : Sonta Septanto"<<endl;
+    cout<<"NIM  : 241011400938"<<endl;
+    cout<<" Tugas UAS Algoritma"<<endl;
+    // Data pesanan yang mencakup ID, lokasi pengambilan, lokasi tujuan, dan waktu pemesanan (timestamp)
+    vector<Order> orders = {
+        {1, "A", "B", "2025-01-05 10:00:00"},
+        {2, "C", "D", "2025-01-05 08:30:00"},
+        {3, "B", "C", "2025-01-05 09:45:00"},
+        {4, "D", "E", "2025-01-05 11:00:00"}
+    };
+
+    // Mengurutkan data pesanan berdasarkan waktu pemesanan (timestamp)
+    vector<Order> sorted_orders = mergeSort(orders);
+
+    // Menampilkan hasil pengurutan
+    cout << "Data Pesanan Setelah Diurutkan Berdasarkan Waktu Pemesanan:" << endl;
+    for (const auto& order : sorted_orders) {
+        cout << "Order ID: " << order.order_id
+             << ", Pickup: " << order.pickup_location
+             << ", Destination: " << order.destination
+             << ", Timestamp: " << order.timestamp << endl;
+    }
+
+    return 0;
+}
