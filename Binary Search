@@ -1,0 +1,28 @@
+print ("Nama : Sonta Septanto")
+print ("NIM  : 241011400938")
+
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        # Jika target ditemukan di tengah
+        if arr[mid] == target:
+            return mid
+        # Jika target lebih kecil dari elemen tengah, cari di sebelah kiri
+        elif arr[mid] > target:
+            right = mid - 1
+        # Jika target lebih besar dari elemen tengah, cari di sebelah kanan
+        else:
+            left = mid + 1
+    return -1  # Kembalikan -1 jika tidak ditemukan
+
+# Main program
+arr = [10, 20, 30, 40, 50]  # Array terurut
+target = int(input("Masukkan elemen yang ingin dicari: "))
+
+result = binary_search(arr, target)
+
+if result == -1:
+    print("Elemen tidak ditemukan!")
+else:
+    print(f"Elemen ditemukan di index: {result}")
